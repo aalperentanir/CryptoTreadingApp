@@ -59,7 +59,7 @@ public class WatchListController {
 	
 	
 	@PatchMapping("/api/watchlist/add/coin/{coinId}")
-	public ResponseEntity<Coin> addItemToWatchList(@RequestHeader("Authorization")String jwt, String coinId) throws Exception{
+	public ResponseEntity<Coin> addItemToWatchList(@RequestHeader("Authorization")String jwt, @PathVariable String coinId) throws Exception{
 		
 		User user = userService.findUserProfileByJwt(jwt);
 		

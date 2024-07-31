@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class WatchList {
 	@OneToOne
 	private User user;
 	
-	@ManyToOne
+	@ManyToMany
 	private List<Coin> coins = new ArrayList<>();
 	
 	

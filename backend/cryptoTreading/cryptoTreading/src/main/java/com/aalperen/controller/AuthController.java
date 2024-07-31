@@ -23,6 +23,7 @@ import com.aalperen.response.AuthResponse;
 import com.aalperen.service.CustomeUserDetailsService;
 import com.aalperen.service.EmailService;
 import com.aalperen.service.TwoFactorOtpService;
+import com.aalperen.service.WatchListService;
 import com.aalperen.utils.OtpUtils;
 
 @RestController
@@ -37,6 +38,9 @@ public class AuthController {
 	
 	@Autowired
 	private TwoFactorOtpService twoFactorOtpService;
+	
+	@Autowired
+	private WatchListService watchListService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -58,6 +62,8 @@ public class AuthController {
 		newUser.setPassword(user.getPassword());
 		
 		User savedUser = userRepository.save(newUser);
+		
+		watchListService.createWatchList(savedUser);
 		
 		Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 		

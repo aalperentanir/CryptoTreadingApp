@@ -27,7 +27,7 @@ public class CoinController {
 	private ObjectMapper objectMapper;
 	
 	@GetMapping
-	public ResponseEntity<List<Coin>> getCoinList(@RequestParam("page")int page) throws Exception{
+	public ResponseEntity<List<Coin>> getCoinList(@RequestParam(required = false, name="page")int page) throws Exception{
 		List<Coin>coins = coinService.getCoinList(page);
 		
 		return new ResponseEntity<>(coins, HttpStatus.ACCEPTED);
@@ -58,9 +58,9 @@ public class CoinController {
 		return ResponseEntity.ok(jsonNode);
 	}
 	
-	@GetMapping("/treading")
+	@GetMapping("/trending")
 	public ResponseEntity<JsonNode> getTreadingCoin() throws Exception{
-		String coin = coinService.getTreadingCoins();
+		String coin = coinService.getTrendCoins();
 		JsonNode jsonNode = objectMapper.readTree(coin);
 		
 		return ResponseEntity.ok(jsonNode);
