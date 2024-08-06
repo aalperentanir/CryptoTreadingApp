@@ -33,7 +33,7 @@ const Navbar = () => {
 
                   <div>
                     <span className="font-bold text-blue-800">Crypto</span>
-                    <span>Tread</span>
+                    <span>Quest</span>
                   </div>
                 </div>
               </SheetTitle>
@@ -42,7 +42,7 @@ const Navbar = () => {
           </SheetContent>
         </Sheet>
         <p className="text-sm lg:text-base cursor-pointer">
-          Crypto Treading
+        Crypto Quest
         </p>
         <div className="p-0 ml-9">
           <Button variant="outline" className="flex items-center gap-3">

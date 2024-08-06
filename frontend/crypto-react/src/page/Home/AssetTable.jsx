@@ -11,8 +11,11 @@ import {
 
 import { AvatarIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 const AssetTable = () => {
+
+  const navigate = useNavigate()
   return (
     <Table>
       <TableHeader>
@@ -28,7 +31,7 @@ const AssetTable = () => {
       <TableBody>
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => (
           <TableRow key={index}>
-            <TableCell className="font-medium flex items-center gap-2">
+            <TableCell onClick={()=> navigate(`/market/bitcoin`)} className="font-medium flex items-center gap-2">
               <Avatar className="z-50">
                 <AvatarImage src="https://cdn.pixabay.com/photo/2017/03/12/02/57/bitcoin-2136339_640.png"></AvatarImage>
               </Avatar>

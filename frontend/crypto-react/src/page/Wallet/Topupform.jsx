@@ -7,7 +7,7 @@ import React from "react";
 
 const Topupform = () => {
   const [amount, setAmount] = React.useState("");
-  const [paymentMethod, setPaymentMethod] = React.useState("RAZORPAY");
+  const [paymentMethod, setPaymentMethod] = React.useState("STRIPE");
 
   const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value);
@@ -43,12 +43,12 @@ const Topupform = () => {
             <RadioGroupItem
               icon={DotFilledIcon}
               className="h-9 w-9"
-              value="RAZORPAY"
+              value="BTCPAY"
               id="r1"
             />
             <Label htmlFor="r1">
               <div className="bg-white rounded-md px-5 py-2 w-32">
-                <img src="" alt="" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/BTCPay_Icon_with_background.png/2048px-BTCPay_Icon_with_background.png" alt="" />
               </div>
             </Label>
           </div>
