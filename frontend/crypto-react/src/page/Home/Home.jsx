@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect } from "react";
 import AssetTable from "./AssetTable";
 import StockChart from "./StockChart";
 import { Input } from "@/components/ui/input";
@@ -7,11 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Cross1Icon, DotIcon } from "@radix-ui/react-icons";
 import { MessageCircle } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCoinList } from "@/State/Coin/Action";
 
 const Home = () => {
   const [category, setCategory] = React.useState("all");
   const [inputValue, setInputValue] = React.useState("");
   const [isBotRealease, setIsBotRealease] = React.useState(false);
+  const {coin} = useSelector(store => store);
+  const dispatch = useDispatch();
 
   const handleBotRealease = () => setIsBotRealease(!isBotRealease);
 
@@ -29,6 +33,10 @@ const Home = () => {
       setInputValue("");
     }
   };
+
+  useEffect(() =>{
+    dispatch(getCoinList(1))
+  },[])
 
   return (
     <div className="relative">
@@ -67,7 +75,7 @@ const Home = () => {
               Top Losers
             </Button>
           </div>
-          <AssetTable />
+          <AssetTable coin={coin.coinList} category={category}/>
         </div>
 
         <div className="hidden lg:block lg:w-[50%] p-5">
