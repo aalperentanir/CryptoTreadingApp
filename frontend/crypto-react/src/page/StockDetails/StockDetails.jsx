@@ -5,7 +5,7 @@ import {
   BookmarkIcon,
   DotIcon,
 } from "@radix-ui/react-icons";
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Dialog,
@@ -17,8 +17,29 @@ import {
 } from "@/components/ui/dialog";
 import Treadingform from "./Treadingform";
 import StockChart from "../Home/StockChart";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchCoinDetails } from "@/State/Coin/Action";
+import { addItemToWatchlist, getUserWatchlist } from "@/State/Watchllist/Action";
+import { existInWatchlist } from "@/config/existInWatchlist";
 
 const StockDetails = () => {
+
+  const {coin, watchlist} =useSelector(store=>store)
+  const dispatch = useDispatch();
+
+  const {id} = useParams();
+
+  console.log("coinId: ", id)
+
+  useEffect(()=>{
+    dispatch(fetchCoinDetails({coinId:id, jwt:localStorage.getItem("jwt")}))
+    dispatch(getUserWatchlist(localStorage.getItem("jwt")));
+  },[id])
+
+  const handleAddCoinToWatchlist =() => {
+    dispatch(addItemToWatchlist({jwt:localStorage.getItem("jwt"), coinId:coin.coinDetails?.id}))
+  }
   return (
     <div className="p-5 mt-5">
       <div className="flex justify-between">
@@ -27,30 +48,30 @@ const StockDetails = () => {
             <Avatar>
               <AvatarImage
                 src={
-                  "https://cdn.pixabay.com/photo/2017/03/12/02/57/bitcoin-2136339_640.png"
+                  coin.coinDetails?.image.large
                 }
               />
             </Avatar>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <p>BTC</p>
+              <p>{coin.coinDetails?.symbol.toUpperCase()}</p>
               <DotIcon className="text-gray-400" />
-              <p className="text-gray-400">Bitcoin</p>
+              <p className="text-gray-400">{coin.coinDetails?.name}</p>
             </div>
             <div className="flex items-end gap-2">
-              <p className="tex-2xl font-bold">$123</p>
+              <p className="tex-2xl font-bold">${coin.coinDetails?.market_data.current_price.usd}</p>
               <p className="text-red-600">
-                <span> -12345131321.123</span>
-                <span>(-0.12345%)</span>
+                <span>{coin.coinDetails?.market_data.market_cap_change_24h}</span>
+                <span>({coin.coinDetails?.market_data.market_cap_change_percentage_24h}%)</span>
               </p>
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <Button>
-            {true ? (
+          <Button onClick={handleAddCoinToWatchlist}>
+            {existInWatchlist(watchlist.items,coin.coinDetails) ? (
               <BookmarkFilledIcon className="h-6 w-6" />
             ) : (
               <BookmarkIcon className="h-6 w-6" />
@@ -71,7 +92,7 @@ const StockDetails = () => {
         </div>
       </div>
       <div className="mt-14">
-      <StockChart/>
+      <StockChart coinId={id}/>
       </div>
       
     </div>

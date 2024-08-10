@@ -3,19 +3,30 @@ import React, { useEffect } from "react";
 import AssetTable from "./AssetTable";
 import StockChart from "./StockChart";
 import { Input } from "@/components/ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Cross1Icon, DotIcon } from "@radix-ui/react-icons";
 import { MessageCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCoinList } from "@/State/Coin/Action";
+import { fetchMarketChart, getCoinList, getTop50CoinList } from "@/State/Coin/Action";
 
 const Home = () => {
   const [category, setCategory] = React.useState("all");
   const [inputValue, setInputValue] = React.useState("");
   const [isBotRealease, setIsBotRealease] = React.useState(false);
-  const {coin} = useSelector(store => store);
+  const { coin } = useSelector((store) => store);
   const dispatch = useDispatch();
+
+  console.log("homeCoin",coin)
 
   const handleBotRealease = () => setIsBotRealease(!isBotRealease);
 
@@ -34,10 +45,15 @@ const Home = () => {
     }
   };
 
-  useEffect(() =>{
-    dispatch(getCoinList(1))
-  },[])
+  useEffect(() => {
+    dispatch(getCoinList(1));
+  }, []);
 
+  useEffect(() => {
+    dispatch(getTop50CoinList());
+  }, [category]);
+
+  
   return (
     <div className="relative">
       <div className="lg:flex">
@@ -75,11 +91,32 @@ const Home = () => {
               Top Losers
             </Button>
           </div>
-          <AssetTable coin={coin.coinList} category={category}/>
+          <AssetTable
+            coin={category == "all" ? coin.coinList : coin.top50}
+            category={category}
+          />
+          <div>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
 
         <div className="hidden lg:block lg:w-[50%] p-5">
-          <StockChart />
+          <StockChart coinId={"bitcoin"} />
           <div className="flex gap-5 items-center">
             <div>
               <Avatar>

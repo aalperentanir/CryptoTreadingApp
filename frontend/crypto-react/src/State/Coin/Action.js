@@ -60,7 +60,7 @@ export const fetchMarketChart = ({ coinId, days, jwt }) => async (dispatch) => {
 
     try {
       const response = await axios.get(
-        `${base_url}/${coinId}/coins/chart?days=${days}`,
+        `${base_url}/coins/${coinId}/chart?days=${days}`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -68,6 +68,7 @@ export const fetchMarketChart = ({ coinId, days, jwt }) => async (dispatch) => {
         }
       );
 
+      console.log("marketChart: ", response.data)
       dispatch({ type: FETCH_MARKET_CHART_SUCCESS, payload: response.data });
 
     } catch (error) {
@@ -95,7 +96,7 @@ export const fetchMarketChart = ({ coinId, days, jwt }) => async (dispatch) => {
     }
   };
 
-  export const fetchCoinDetails = (coinId) => async (dispatch) => {
+  export const fetchCoinDetails = ({coinId,jwt}) => async (dispatch) => {
     dispatch({ type: FETCH_COIN_DETAILS_REQUEST });
 
     const base_url ="http://localhost:8081"

@@ -25,19 +25,28 @@ public class WalletServiceImp implements WalletService{
 		if(wallet == null) {
 			wallet = new Wallet();
 			wallet.setUser(user);
+			walletRepository.save(wallet);
 		}
 		return wallet;
 	}
 
-	@Override
 	public Wallet addBalance(Wallet wallet, Long money) {
-		BigDecimal balance = wallet.getBalance();
-		BigDecimal newBalance = balance.add(balance);
-		
-		wallet.setBalance(newBalance);
-		
-		return walletRepository.save(wallet);
+	    BigDecimal balance = wallet.getBalance();
+	    BigDecimal newBalance = balance.add(BigDecimal.valueOf(money));
+	    
+	    wallet.setBalance(newBalance);
+	    
+	    return walletRepository.save(wallet);
 	}
+//	@Override
+//	public Wallet addBalance(Wallet wallet, Long money) {
+//		BigDecimal balance = wallet.getBalance();
+//		BigDecimal newBalance = balance.add(balance);
+//		
+//		wallet.setBalance(newBalance);
+//		
+//		return walletRepository.save(wallet);
+//	}
 
 	@Override
 	public Wallet findWalletById(Long id) throws Exception {

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import { fetchMarketChart } from "@/State/Coin/Action";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
+import { useDispatch, useSelector } from "react-redux";
 
 const timeSeries = [
   {
@@ -21,27 +23,22 @@ const timeSeries = [
     lable: "1 Month",
     value: 30,
   },
+  {
+    keyword: "DIGITAL_CURRENCY_YEARLY",
+    key: "Yearly Time Series",
+    lable: "1 Year",
+    value: 365,
+  }
+  
 ];
-const StockChart = () => {
-  const [activeLable, setActiveLable] = useState("1 Day");
+const StockChart = ({coinId}) => {
+
+  const dispatch = useDispatch()
+  const [activeLable, setActiveLable] = useState(timeSeries[0]);
+  const {coin} = useSelector(store=>store)
   const series = [
     {
-      data: [
-        [1720012227767, 59806.87425955481],
-        [1720015357903, 60506.81684105061],
-        [1720019116910, 60217.68768076043],
-        [1720022579727, 60119.6569758108],
-        [1720026687941, 60377.64969349297],
-        [1720029981455, 60324.50778147703],
-        [1720033568389, 60095.36814276449],
-        [1720037437963, 59745.8278835818],
-        [1720040490281, 59563.92273028924],
-        [1720044623374, 60147.75475815409],
-        [1720048081617, 60242.774086307996],
-        [1720051731868, 60182.99341375096],
-        [1720054958125, 60398.52778331812],
-        [1720059091716, 58128.71854045257],
-      ],
+      data: coin.marketChart.data,
     },
   ];
 
@@ -93,13 +90,17 @@ const StockChart = () => {
     setActiveLable(value);
   };
 
+   useEffect(()=>{
+    dispatch(fetchMarketChart({coinId,days:activeLable.value,jwt:localStorage.getItem("jwt")}))
+  },[dispatch,coinId,activeLable])
+
   return (
     <div>
       <div className="space-x-3">
         {timeSeries.map((item) => (
           <Button
-            onClick={() => handleActiveLable(item.lable)}
-            variant={activeLable == item.lable ? "" : "outline"}
+            variant={activeLable.lable == item.lable ? "" : "outline"}
+            onClick={() => handleActiveLable(item)}
             key={item.lable}
           >
             {item.lable}

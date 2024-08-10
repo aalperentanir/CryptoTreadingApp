@@ -74,76 +74,70 @@ public class OrderServiceImp implements OrderService{
 	
 	@Transactional
 	public Order buyAsset(Coin coin, double quantity, User user) throws Exception {
-		if(quantity<=0) {
-			throw new Exception("Quantity should be positive");
-		}
-		double buyPrice = coin.getCurrentPrice();
-		OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, 0);
-		
-		Order order = createOrder(user, orderItem, OrderType.BUY);
-		orderItem.setOrder(order);
-		
-		walletService.payOrderPayment(order, user);
-		
-		order.setStatus(OrderStatus.SUCCESS);
-		order.setOrderType(OrderType.BUY);
-		
-		Order savedOrder = orderRepository.save(order);
-		
-		Asset oldAsset= assetService.findAssetByUserIdAndCoinId(order.getUser().getId(), order.getOrderItem().getCoin().getId());
-		
-		if(oldAsset == null) {
-			assetService.createAsset(user, orderItem.getCoin(), orderItem.getQuantity());
-		
-		}else {
-			assetService.updateAsset(oldAsset.getId(), quantity);
-		}
-		
-		return savedOrder;
+	    if (quantity <= 0) {
+	        throw new Exception("Quantity should be positive");
+	    }
+	    double buyPrice = coin.getCurrentPrice();
+	    OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, 0);
+
+	    Order order = createOrder(user, orderItem, OrderType.BUY);
+	    orderItem.setOrder(order);
+
+	    walletService.payOrderPayment(order, user);
+
+	    order.setStatus(OrderStatus.SUCCESS);
+	    order.setOrderType(OrderType.BUY);
+
+	    Order savedOrder = orderRepository.save(order);
+
+	    Asset oldAsset = assetService.findAssetByUserIdAndCoinId(order.getUser().getId(), order.getOrderItem().getCoin().getId());
+
+	    if (oldAsset == null) {
+	        assetService.createAsset(user, orderItem.getCoin(), orderItem.getQuantity());
+	    } else {
+	        assetService.updateAsset(oldAsset.getId(), oldAsset.getQuantity() + quantity);
+	    }
+
+	    return savedOrder;
 	}
-	
+
 	@Transactional
 	public Order sellAsset(Coin coin, double quantity, User user) throws Exception {
-		if(quantity<=0) {
-			throw new Exception("Quantity should be positive");
-		}
-		double sellPrice = coin.getCurrentPrice();
-		
-		Asset assetToSell = assetService.findAssetByUserIdAndCoinId(user.getId(), coin.getId());
-		
-		double buyPrice = assetToSell.getBuyPrice();
-		
-		if(assetToSell != null) {
-		OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, sellPrice);
-		
-		Order order = createOrder(user, orderItem, OrderType.SELL);
-		orderItem.setOrder(order);
-		
-		
-		if(assetToSell.getQuantity()>=quantity) {
-			
-			order.setStatus(OrderStatus.SUCCESS);
-			order.setOrderType(OrderType.SELL);
-			
-			Order savedOrder = orderRepository.save(order);
-			
-			walletService.payOrderPayment(order, user);
-			
-			
-			
-			Asset updateAsset = assetService.updateAsset(assetToSell.getId(), -quantity);
-			
-			if(updateAsset.getQuantity()*coin.getCurrentPrice()<=1) {
-				assetService.deleteAsset(updateAsset.getId());
-		   }
-			return savedOrder;
-		}
-		throw new Exception("Insufficiemt quantity to sell");
-		
-		}
-		
-		throw new Exception("Asset not found");
+	    if (quantity <= 0) {
+	        throw new Exception("Quantity should be positive");
+	    }
+	    double sellPrice = coin.getCurrentPrice();
+
+	    Asset assetToSell = assetService.findAssetByUserIdAndCoinId(user.getId(), coin.getId());
+
+	    if (assetToSell == null) {
+	        throw new Exception("Asset not found");
+	    }
+
+	    double buyPrice = assetToSell.getBuyPrice();
+
+	    if (assetToSell.getQuantity() < quantity) {
+	        throw new Exception("Insufficient quantity to sell");
+	    }
+
+	    OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, sellPrice);
+
+	    Order order = createOrder(user, orderItem, OrderType.SELL);
+	    orderItem.setOrder(order);
+
+	    walletService.payOrderPayment(order, user);
+
+	    Order savedOrder = orderRepository.save(order);
+
+	    assetService.updateAsset(assetToSell.getId(), assetToSell.getQuantity() - quantity);
+
+	    if (assetToSell.getQuantity() <= 0) {
+	        assetService.deleteAsset(assetToSell.getId());
+	    }
+
+	    return savedOrder;
 	}
+
 	
 	
 	@Override

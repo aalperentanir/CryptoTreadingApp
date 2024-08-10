@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {
     Table,
     TableBody,
@@ -9,8 +9,19 @@ import {
     TableRow,
   } from "@/components/ui/table";
   import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersForUser } from "@/State/Order/Action";
+import { calculateEarn } from "@/config/calculateEarnValue";
 
 const Activity = () => {
+  const dispatch = useDispatch();
+  const {order} = useSelector(store=> store);
+//  console.log("Tarih:", order..toISOString().split('T')[0]); // Tarih kısmı
+//console.log("Saat:", date.toISOString().split('T')[1]);
+
+  useEffect(()=>{
+    dispatch(getAllOrdersForUser({jwt:localStorage.getItem("jwt")}))
+  },[])
     return(
         <div className="p-5 lg:px-20">
         <h1 className="font-bold text-3xl pb-5">Activity</h1>
@@ -27,23 +38,23 @@ const Activity = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => (
+          {order.orders.map((item, index) => (
             <TableRow key={index}>
               <TableCell>
-                <p>2024/08/02</p>
-                <p className="text-gray-400">11:54:01</p>
+                <p>{item.timeStamp.split('T')[0]}</p>
+                <p className="text-gray-400">{item.timeStamp.split('T')[1]}</p>
               </TableCell>
               <TableCell className="font-medium flex items-center gap-2">
                 <Avatar className="z-50">
-                  <AvatarImage src="https://cdn.pixabay.com/photo/2017/03/12/02/57/bitcoin-2136339_640.png"></AvatarImage>
+                  <AvatarImage src={item.orderItem.coin.image}></AvatarImage>
                 </Avatar>
-                <span>Bitcoin</span>
+                <span>{item.orderItem.coin.name}</span>
               </TableCell>
-              <TableCell>$6441</TableCell>
-              <TableCell>$6331</TableCell>
-              <TableCell>BUY</TableCell>
-              <TableCell>-</TableCell>
-              <TableCell className="text-right">$177</TableCell>
+              <TableCell>${item.orderItem.buyPrice}</TableCell>
+              <TableCell>${item.orderItem.sellPrice}</TableCell>
+              <TableCell>{item.orderType}</TableCell>
+              <TableCell>{calculateEarn(item)}</TableCell>
+              <TableCell className="text-right">{item.price}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -17,7 +17,7 @@ public class PaymentDetails {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	private String accountDumber;
+	private String accountNumber;
 	
 	private String accountHolderName;
 	

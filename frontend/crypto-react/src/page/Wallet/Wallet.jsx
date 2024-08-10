@@ -2,14 +2,49 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ReloadIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { CopyIcon, DollarSign, DownloadIcon, ShuffleIcon, UploadIcon, WalletIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import Topupform from "./Topupform";
 import Witddrawalform from "./Withdrawalform";
 import Transferform from "./Transferform";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { depositMoney, getUserWallet } from "@/State/Wallet/Action";
+import { useLocation, useNavigate } from "react-router-dom";
+
+function useQuery() {
+  const searchParams = new URLSearchParams(window.location.search);
+  return searchParams;
+}
 
 
 const Wallet = () => {
+
+  const {wallet} =useSelector(store=>store);
+  const dispatch = useDispatch();
+  const query = useQuery();
+  const orderId = query.get("order_id");
+  const paymentId = query.get("payment_id")
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    handleFetchUserWallet()
+  },[])
+
+  useEffect(()=>{
+    if(orderId){
+      dispatch(depositMoney({jwt:localStorage.getItem("jwt"),
+        orderId,
+        paymentId,
+        navigate
+      }))
+    }
+
+  },[orderId, paymentId])
+
+  const handleFetchUserWallet=()=>{
+    dispatch(getUserWallet(localStorage.getItem("jwt")))
+  }
+
   return (
     <div className="flex flex-col items-center">
       <div className="pt-10 w-full lg:w-[60%]">
@@ -21,20 +56,20 @@ const Wallet = () => {
                 <div>
                   <CardTitle className="text-2xl">My Wallet</CardTitle>
                   <div className="flex items-center gap-2">
-                    <p className="text-gray-700 text-sm">#A12ECF</p>
+                    <p className="text-gray-700 text-sm">#{wallet.userWallet?.id}</p>
                     <CopyIcon size={15} className="cursor-pointer hover:text-slate-300" />
                   </div>
                 </div>
               </div>
               <div>
-                <ReloadIcon className="w-6 h-6 cursor-pointer hover:text-gray-400"/>
+                <ReloadIcon onClick={handleFetchUserWallet}className="w-6 h-6 cursor-pointer hover:text-gray-400"/>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
                 <DollarSign/>
-                <span className="text-2xl font-semibold">2000</span>
+                <span className="text-2xl font-semibold">{wallet.userWallet.balance}</span>
             </div>
             <div className="flex gap-7 mt-5">
                 <Dialog>

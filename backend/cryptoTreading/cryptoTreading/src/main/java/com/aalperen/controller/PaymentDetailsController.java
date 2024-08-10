@@ -29,7 +29,7 @@ public class PaymentDetailsController {
 		
 		User user = userService.findUserProfileByJwt(jwt);
 		
-		PaymentDetails paymentDetails = paymentDetailsService.addPaymentDetails(req.getAccountDumber(),
+		PaymentDetails paymentDetails = paymentDetailsService.addPaymentDetails(req.getAccountNumber(),
 				                                                                req.getAccountHolderName(),
 				                                                                req.getIfsc(),
 				                                                                req.getBankName(),

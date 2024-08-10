@@ -20,7 +20,7 @@ public class PaymentDetailsServiceImp implements PaymentDetailsService{
 		
 		PaymentDetails paymentDetails = new PaymentDetails();
 		
-		paymentDetails.setAccountDumber(accountNumber);
+		paymentDetails.setAccountNumber(accountNumber);
 		paymentDetails.setAccountHolderName(accountHolderName);
 		paymentDetails.setBankName(bankName);
 		paymentDetails.setIfsc(ifsc);

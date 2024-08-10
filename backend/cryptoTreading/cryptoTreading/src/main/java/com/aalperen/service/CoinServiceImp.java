@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,9 @@ public class CoinServiceImp implements CoinService {
 	
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Value("${coingecko.api.key}")
+	private String API_KEY;
 
 	@Override
 	public List<Coin> getCoinList(int page) throws Exception {
@@ -36,6 +40,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			
@@ -59,6 +64,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			
@@ -81,6 +87,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			
@@ -137,6 +144,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			
@@ -159,6 +167,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			
@@ -182,6 +191,7 @@ public class CoinServiceImp implements CoinService {
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
+			headers.set("x-cg-demo-api-key", API_KEY);
 			
 			HttpEntity<String> entity = new HttpEntity<>("parameters",headers);
 			

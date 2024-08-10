@@ -24,6 +24,7 @@ import com.aalperen.service.OrderService;
 import com.aalperen.service.UserService;
 
 @RestController
+@RequestMapping("/api")
 public class OrderController {
 	
 	@Autowired
