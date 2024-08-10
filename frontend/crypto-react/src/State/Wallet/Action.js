@@ -22,7 +22,7 @@ export const getUserWallet =(jwt)=> async(dispatch)=>{
     }
 }
 
-export const depositMoney =({jwt, orderId, paymentId, navigate})=> async(dispatch)=>{
+/*export const depositMoney =({jwt, orderId, paymentId, navigate})=> async(dispatch)=>{
     dispatch({type:DEPOSIT_MONEY_REQUEST});
 
     console.log("---------------------",orderId,paymentId)
@@ -48,7 +48,32 @@ export const depositMoney =({jwt, orderId, paymentId, navigate})=> async(dispatc
         dispatch({type:DEPOSIT_MONEY_FAILURE, error:error.message})
         navigate("/wallet")
     }
-}
+}*/
+export const depositMoney = ({jwt, orderId, paymentId, navigate}) => async(dispatch) => {
+    dispatch({ type: DEPOSIT_MONEY_REQUEST });
+  
+    try {
+      const response = await api.put(`${BASE_URL}/api/wallet/deposit`, null, {
+        params: {
+          order_id: orderId,
+          payment_id: paymentId
+        },
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        }
+      });
+  
+      dispatch({ type: DEPOSIT_MONEY_SUCCESS, payload: response.data });
+      // Başarıyla işlem tamamlandıktan sonra /wallet rotasına yönlendirin
+      navigate("/wallet");
+    } catch (error) {
+      console.log("Error during depositMoney:", error);
+      dispatch({ type: DEPOSIT_MONEY_FAILURE, error: error.message });
+      // Hata durumunda da /wallet rotasına yönlendirin
+      navigate("/wallet");
+    }
+  };
+  
 
 export const paymentHandler = ({ jwt, amount, paymentMethod }) => async (dispatch) => {
     dispatch({ type: DEPOSIT_MONEY_REQUEST });

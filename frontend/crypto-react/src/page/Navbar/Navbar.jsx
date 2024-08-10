@@ -43,7 +43,7 @@ const Navbar = () => {
             <Sidebar/>
           </SheetContent>
         </Sheet>
-        <p className="text-sm lg:text-base cursor-pointer">
+        <p className="text-sm lg:text-base cursor-pointer" >
         Crypto Quest
         </p>
         <div className="p-0 ml-9">

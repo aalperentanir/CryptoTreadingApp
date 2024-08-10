@@ -14,9 +14,11 @@ import { register } from "@/State/Auth/Action";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: "",
     defaultValues: {
@@ -28,6 +30,7 @@ const SignupForm = () => {
 
   const onSubmit = (data) => {
     dispatch(register(data))
+    navigate("/signin");
     console.log(data);
   };
   return (
@@ -90,7 +93,7 @@ const SignupForm = () => {
             )}
           />
 
-          <Button type="submit" className="w-full py-5">
+          <Button  type="submit" className="w-full py-5 ">
             Create your account
           </Button>
         </form>

@@ -11,9 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { depositMoney, getUserWallet } from "@/State/Wallet/Action";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 function useQuery() {
-  const searchParams = new URLSearchParams(window.location.search);
-  return searchParams;
+  const location = useLocation();
+  return new URLSearchParams(location.search);
 }
 
 
@@ -23,14 +24,31 @@ const Wallet = () => {
   const dispatch = useDispatch();
   const query = useQuery();
   const orderId = query.get("order_id");
-  const paymentId = query.get("payment_id")
+  const paymentId = query.get("payment_id");
+  
   const navigate = useNavigate()
 
   useEffect(()=>{
     handleFetchUserWallet()
   },[])
 
-  useEffect(()=>{
+  useEffect(() => {
+    if (orderId && paymentId) {
+      // Parametrelerle ilgili işlemleri yapın
+      dispatch(depositMoney({
+        jwt: localStorage.getItem("jwt"),
+        orderId,
+        paymentId,
+        navigate
+      }));
+    }
+  }, [orderId, paymentId, dispatch, navigate]);
+  
+  // API çağrısı başarılı olduğunda navigate ile yönlendirin
+  
+
+
+  /*useEffect(()=>{
     if(orderId){
       dispatch(depositMoney({jwt:localStorage.getItem("jwt"),
         orderId,
@@ -39,7 +57,7 @@ const Wallet = () => {
       }))
     }
 
-  },[orderId, paymentId])
+  },[orderId, paymentId])*/
 
   const handleFetchUserWallet=()=>{
     dispatch(getUserWallet(localStorage.getItem("jwt")))

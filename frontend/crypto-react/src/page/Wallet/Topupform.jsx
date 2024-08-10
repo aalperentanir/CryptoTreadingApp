@@ -23,7 +23,13 @@ const Topupform = () => {
 
   const handleSubmit = () => {
     console.log(amount, paymentMethod);
-    dispatch(paymentHandler({ jwt: localStorage.getItem("jwt"), paymentMethod, amount }));
+    dispatch(
+      paymentHandler({
+        jwt: localStorage.getItem("jwt"),
+        paymentMethod,
+        amount,
+      })
+    );
   };
 
   return (
@@ -45,34 +51,17 @@ const Topupform = () => {
           className="flex"
           defaultValue="STRIPE"
         >
-          <div className="flex items-center space-x-2 border p-3 px-5 rounded-md">
-            <RadioGroupItem
-              icon={DotFilledIcon}
-              className="h-9 w-9"
-              value="BTCPAY"
-              id="r1"
-            />
-            <Label htmlFor="r1">
-              <div className="bg-white rounded-md px-5 py-2 w-32">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/BTCPay_Icon_with_background.png/2048px-BTCPay_Icon_with_background.png"
-                  alt="BTCPAY"
-                />
-              </div>
-            </Label>
-          </div>
-
-          <div className="flex items-center space-x-2 border p-3 px-5 rounded-md">
+          <div className="flex items-center space-x-2 border p-3 px-5 rounded-md w-full max-w-md">
             <RadioGroupItem
               icon={DotFilledIcon}
               className="h-9 w-9"
               value="STRIPE"
               id="r2"
             />
-            <Label htmlFor="r2">
-              <div className="bg-slate-300 rounded-md px-5 w-32">
+            <Label htmlFor="r2" className="w-full">
+              <div className="bg-slate-300 rounded-md px-3 py-2 w-full flex justify-center items-center">
                 <img
-                  className="h-9"
+                  className="h-16 w-auto object-contain"
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/375px-Stripe_Logo%2C_revised_2016.svg.png"
                   alt="Stripe"
                 />
