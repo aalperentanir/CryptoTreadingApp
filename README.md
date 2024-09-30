@@ -24,3 +24,30 @@ This project is a web-based cryptocurrency trading platform where users can buy,
 - **Tailwind-Css**:For styling the frontend.
 - **Axios**: Library used to make HTTP requests to the backend.
 - **Redux**: (Optional) For managing the application state.
+
+
+# Crypto Sage
+
+Crypto Sage is an AI-powered chatbot application that provides users with the latest cryptocurrency prices and market data. The application allows users to ask real-time questions about cryptocurrency values and receive instant responses through a chatbot interface.
+
+## Features
+
+- **AI Chatbot**: Interact with an AI chatbot to inquire about the current values of various cryptocurrencies.
+- **Real-time Market Data**: The chatbot retrieves up-to-date cryptocurrency market information.
+- **Simple Interface**: Easy-to-use chat interface for quick access to cryptocurrency prices.
+- **Multi-Currency Support**: Supports a wide range of cryptocurrencies, including Bitcoin, Ethereum, and many others.
+
+## Technologies Used
+
+### Backend:
+- **Spring Boot**: Used to build the backend services that handle API calls and chatbot logic.
+- **RESTful Web Services**: For fetching real-time cryptocurrency data from third-party APIs.
+- **Gemini API**: (or similar) used for natural language processing and understanding.
+- **MySQL**: Database used to store user preferences and interaction history.
+
+### Frontend:
+- **React**: Used to build the chat interface where users can interact with the AI.
+- **Axios**: To make API requests from the frontend to the backend for data retrieval.
+- **Tailwind-Css**:For styling the frontend.
+
+
