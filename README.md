@@ -1,4 +1,4 @@
-# Cryptocurrency Trading Application
+# Crypto Trading Application
 
 This project is a web-based cryptocurrency trading platform where users can buy, sell, and track various cryptocurrencies. The backend is developed using Spring Boot and RESTful web services, while the frontend is built using React. The application allows users to perform cryptocurrency transactions and provides up-to-date market information.
 
